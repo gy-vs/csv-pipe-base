@@ -1,0 +1,12 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "target": "esnext",
+    // Prevent error "Cannot find name 'it'"
+    "types": ["mocha"],
+  },
+}

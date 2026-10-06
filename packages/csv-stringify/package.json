@@ -46,6 +46,12 @@
         "default": "./dist/cjs/sync.cjs"
       }
     },
+    "./stream": {
+      "import": {
+        "types": "./lib/stream.d.ts",
+        "default": "./lib/stream.js"
+      }
+    },
     "./browser/esm": {
       "types": "./dist/esm/index.d.ts",
       "default": "./dist/esm/index.js"
@@ -91,6 +97,9 @@
       ],
       "sync": [
         "dist/esm/sync.d.ts"
+      ],
+      "stream": [
+        "lib/stream.d.ts"
       ],
       "browser/esm": [
         "dist/esm/index.d.ts"

@@ -2,7 +2,13 @@ import { get } from "../utils/get.js";
 import { is_object } from "../utils/is_object.js";
 import { normalize_columns } from "./normalize_columns.js";
 import { normalize_options } from "./normalize_options.js";
-const bom_utf8 = Buffer.from([239, 187, 191]);
+// The BOM is pushed as a Buffer in Node.js to preserve the historical chunk
+// type and as a string elsewhere; both encode to the same UTF-8 bytes. It is
+// created lazily because `Buffer` is not available in every JavaScript
+// environment, such as edge runtimes, where the module must remain
+// importable.
+const bom_utf8 = () =>
+  typeof Buffer === "undefined" ? "\uFEFF" : Buffer.from([239, 187, 191]);
 // True when appending `separator` after `value` would let `parse` find
 // `separator` starting inside `value`. Besides the field containing the whole
 // separator, this also covers boundary fusion: a field whose tail is a
@@ -275,7 +281,7 @@ const stringifier = function (options, state, info) {
       if (this.options.bom !== true) {
         return;
       }
-      push(bom_utf8);
+      push(bom_utf8());
     },
     headers: function (push) {
       if (this.options.header === false) {

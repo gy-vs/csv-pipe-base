@@ -2,6 +2,11 @@ import { CsvError } from "./CsvError.js";
 import { normalize_columns } from "./normalize_columns.js";
 import { underscore } from "../utils/underscore.js";
 
+// `Buffer` is not available in every JavaScript environment, such as edge
+// runtimes, where the module must remain functional.
+const is_buffer = (value) =>
+  typeof Buffer !== "undefined" && Buffer.isBuffer(value);
+
 const normalize_options = function (opts) {
   const options = {};
   // Merge with user options
@@ -26,7 +31,7 @@ const normalize_options = function (opts) {
   // Normalize option `delimiter`
   if (options.delimiter === undefined || options.delimiter === null) {
     options.delimiter = ",";
-  } else if (Buffer.isBuffer(options.delimiter)) {
+  } else if (is_buffer(options.delimiter)) {
     options.delimiter = options.delimiter.toString();
   } else if (typeof options.delimiter !== "string") {
     return [
@@ -43,7 +48,7 @@ const normalize_options = function (opts) {
     options.quote = '"';
   } else if (options.quote === false) {
     options.quote = "";
-  } else if (Buffer.isBuffer(options.quote)) {
+  } else if (is_buffer(options.quote)) {
     options.quote = options.quote.toString();
   } else if (typeof options.quote !== "string") {
     return [
@@ -118,7 +123,7 @@ const normalize_options = function (opts) {
   // Normalize option `escape`
   if (options.escape === undefined || options.escape === null) {
     options.escape = '"';
-  } else if (Buffer.isBuffer(options.escape)) {
+  } else if (is_buffer(options.escape)) {
     options.escape = options.escape.toString();
   } else if (typeof options.escape !== "string") {
     return [
@@ -160,7 +165,7 @@ const normalize_options = function (opts) {
     options.header_as_comment = false;
   } else if (options.header_as_comment === true) {
     options.header_as_comment = "#";
-  } else if (Buffer.isBuffer(options.header_as_comment)) {
+  } else if (is_buffer(options.header_as_comment)) {
     options.header_as_comment = options.header_as_comment.toString();
   } else if (typeof options.header_as_comment !== "string") {
     throw new CsvError(
@@ -247,7 +252,7 @@ const normalize_options = function (opts) {
     options.record_delimiter === null
   ) {
     options.record_delimiter = "\n";
-  } else if (Buffer.isBuffer(options.record_delimiter)) {
+  } else if (is_buffer(options.record_delimiter)) {
     options.record_delimiter = options.record_delimiter.toString();
   } else if (typeof options.record_delimiter !== "string") {
     return [

@@ -46,6 +46,12 @@
         "default": "./dist/cjs/sync.cjs"
       }
     },
+    "./stream": {
+      "import": {
+        "types": "./lib/stream.d.ts",
+        "default": "./lib/stream.js"
+      }
+    },
     "./browser/esm": {
       "types": "./dist/esm/index.d.ts",
       "default": "./dist/esm/index.js"
@@ -79,8 +85,8 @@
     "lint:ts": "tsc --noEmit true",
     "preversion": "npm run build && git add dist",
     "test": "npx tsc --noEmit && mocha 'test/**/*.{js,ts}'",
-    "test:16": "mocha 'test/**/*.js'",
-    "test:legacy": "mocha --ignore test/api.callback.js --ignore test/api.web_stream.js 'test/**/*.{js,ts}'"
+    "test:16": "mocha --ignore test/api.web_stream.js --ignore test/api.web_stream.ts 'test/**/*.js'",
+    "test:legacy": "mocha --ignore test/api.callback.js --ignore test/api.web_stream.js --ignore test/api.web_stream.ts 'test/**/*.{js,ts}'"
   },
   "type": "module",
   "types": "dist/esm/index.d.ts",

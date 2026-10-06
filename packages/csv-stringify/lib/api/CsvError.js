@@ -9,11 +9,14 @@ class CsvError extends Error {
     for (const context of contexts) {
       for (const key in context) {
         const value = context[key];
-        this[key] = Buffer.isBuffer(value)
-          ? value.toString()
-          : value == null
-            ? value
-            : JSON.parse(JSON.stringify(value));
+        this[key] =
+          // `Buffer` is not available in every JavaScript environment,
+          // such as edge runtimes.
+          typeof Buffer !== "undefined" && Buffer.isBuffer(value)
+            ? value.toString()
+            : value == null
+              ? value
+              : JSON.parse(JSON.stringify(value));
       }
     }
   }
